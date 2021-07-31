@@ -6,63 +6,97 @@ import 'react-vertical-timeline-component/style.min.css';
 import Profile from "../assets/images/profile.webp"
 import Slider from "../Components/Slick";
 import Card from '../Components/Card';
-import BgPPSMB from "../assets/images/works-ppsmb.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faGraduationCap, faHandsHelping, faLaptop, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { ExpItems } from './ExpItems';
-import { ProjectItems } from './ProjectItems';
-import AOS from 'aos';
+import { faEllipsisH, faGraduationCap, faHandsHelping, faLaptop } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom";
 
-//Variable needed
-var i;
-var expShowing;
+import sanityClient from "../client";
+import BlockContent from "@sanity/block-content-to-react";
+
 
 export default function Home() {
 
-
     const [chosenCategory, setChosenCategory] = useState("all");
-    var [elements, setElements] = useState([]);
-    const [isAllShown, setIsAllShown] = useState(false);
-
-    // Filter My Experiences Category
+    const [postData, setPost] = useState(null);
+    const [expData, setExpData] = useState(null);
 
     useEffect(() => {
-        AOS.init({
-            duration: 2000
-        });
+        window.scrollTo(0, 0);
+        sanityClient.fetch(`*[_type == "post"]{
+            title,
+            subtitle,
+            slug,
+            textColor,
+            blockColor,
+            body,
+            publishedAt,
+            mainImage{
+                asset->{
+                    _id,
+                    url
+                },alt
+            }
+        }`).then((data) => setPost(data)).catch(console.error);
     }, []);
+
     useEffect(() => {
-        resetLoad();
+        if (chosenCategory === 'all') {
+            sanityClient
+                .fetch(`*[_type == "experience" ]{
+                title,
+                date,
+                place,
+                expType,
+                expSize,
+                subtitle,
+            }`)
+                .then((data) => setExpData(data))
+                .catch(console.error);
+
+        } else {
+            sanityClient
+                .fetch(`*[_type == "experience" && expType == "${chosenCategory}" ]{
+                title,
+                date,
+                place,
+                expType,
+                expSize,
+                subtitle,
+            }`)
+                .then((data) => setExpData(data))
+                .catch(console.error);
+        }
     }, [chosenCategory]);
 
-    const resetLoad = () => {
-        console.log('reset load');
-        elements = [];
-        expShowing = ExpItems;
-        setIsAllShown(false);
-        i = 0;
-        console.log('after reseted, elements:', elements);
-        if (chosenCategory !== 'all') {
-            expShowing = expShowing.filter(item => item.class === chosenCategory);
-        }
-        console.log('after filtered, expShowing:', expShowing);
-        loadMore();
-    }
+
+
+    // const resetLoad = () => {
+    //     elements = [];
+    //     setIsAllShown(false);
+    //     i = 0;
+    //     console.log('after reseted, elements:', elements);
+    // if (chosenCategory !== 'all') {
+    //     expShowing = expShowing.filter(item => item.expType === chosenCategory);
+    // }
+    // console.log('after filtered, expShowing:', expShowing);
+    //     loadMore();
+    // }
 
     //Load More Items evertime clicked
-    const loadMore = () => {
-        i = i + 2;
-        console.log('i value', i);
+    // const loadMore = () => {
+    //     i = i + 2;
+    //     console.log('i value: ', i);
 
-        if (i < expShowing.length) {
-            setElements([...elements, ...expShowing.slice(-2 + i, i)]);
-            console.log('added this:', elements);
-        } else {
-            setElements([...elements, ...expShowing.slice(-2 + i, i)]);
-            setIsAllShown(true);
-            console.log('finally added this:', elements);
-        }
-    };
+    //     if (i < expData.length) {
+    //         setElements([...elements, ...expData.slice(-2 + i, i)]);
+    //         console.log('added this:', elements);
+    //     } else {
+    //         setElements([...elements, ...expData.slice(-2 + i, i)]);
+    //         setIsAllShown(true);
+    //         console.log('finally added this:', elements);
+    //     }
+    // };
+
 
     return (
         <Container>
@@ -72,7 +106,7 @@ export default function Home() {
                     <h3>Product Development Enthusiast</h3>
                 </div>
                 <div className='hero-profile'>
-                    <img src={Profile} alt="Ale's Photo Profile" />
+                    <img src={Profile} alt="Ale's Profile"/>
                 </div>
             </section>
             <section className='about'>
@@ -87,65 +121,82 @@ export default function Home() {
                     <Slider
                         slidesToShow={3}
                         slidesToShowMobile={1}
-                        slidesToShowTablet={1}
+                        slidesToShowTablet={2}
                         slidesToScroll={1}
                         infinite={true}>
-                        {ProjectItems.map((item, index) => {
-                            return (
-                                <div>
-                                    <Card headerColor={item.headerColor} textColor={item.textColor} title={item.title} subTitle={item.subTitle} background={item.background} />
-                                </div>
-                            )
-                        })}
+                        {postData && postData.map((post, index) => (
+                            <div key={index}>
+                                <Card
+                                    key={index}
+                                    slug={"/myworks/" + post.slug.current}
+                                    keys={post.slug.current}
+                                    blockColor={post.blockColor}
+                                    textColor={post.textColor}
+                                    title={post.title}
+                                    subtitle={post.subtitle}
+                                    imageSrc={post.mainImage.asset.url}
+                                    imageAlt={post.mainImage.alt}
+                                />
+
+                            </div>
+                        ))}
                     </Slider>
+                </div>
+                <div className='call-to-action'>
+                    <a href='' download><div className='button'>
+                        <h4>Download Portfolio</h4>
+                    </div></a>
                 </div>
 
             </section>
             <section className='exps'>
-                <h2 className='orange'>My Experiences</h2>
-                <h4>“Experience is the best teacher,” said the wise</h4>
-
+                <h2 className='orange'><span className='white'>My Latest</span> Experiences</h2>
                 <div className='categories'>
-                    <h5 onClick={() => setChosenCategory('all')} style={{ color: ((chosenCategory !== 'all') ? 'var(--white)' : 'var(--orange)') }}>All</h5>
-                    <h5 onClick={() => setChosenCategory('work')} style={{ color: ((chosenCategory !== 'work') ? 'var(--white)' : 'var(--orange)') }}>Works</h5>
-                    <h5 onClick={() => setChosenCategory('volunteer')} style={{ color: ((chosenCategory !== 'volunteer') ? 'var(--white)' : 'var(--orange)') }}>Volunteer</h5>
-                    <h5 onClick={() => setChosenCategory('education')} style={{ color: ((chosenCategory !== 'education') ? 'var(--white)' : 'var(--orange)') }}>Education</h5>
+                    <h5 onClick={() => setChosenCategory("all")} style={{ color: ((chosenCategory !== 'all') ? 'var(--white)' : 'var(--orange)') }}>All</h5>
+                    <h5 onClick={() => setChosenCategory("work")} style={{ color: ((chosenCategory !== 'work') ? 'var(--white)' : 'var(--orange)') }}>Works</h5>
+                    <h5 onClick={() => setChosenCategory("volunteer")} style={{ color: ((chosenCategory !== 'volunteer') ? 'var(--white)' : 'var(--orange)') }}>Volunteer</h5>
+                    <h5 onClick={() => setChosenCategory("education")} style={{ color: ((chosenCategory !== 'education') ? 'var(--white)' : 'var(--orange)') }}>Education</h5>
                 </div>
 
 
                 <div className='timeline'>
                     <VerticalTimeline>
-                        {elements.map((exp, index) => {
-                            return (
+                        {expData && expData.slice(0, 3).map((exp, index) => (
                                 <VerticalTimelineElement
-                                    className={exp.class}
-                                    className={exp.size}
+                                    className={exp.expType}
+                                    className={exp.expSize}
                                     contentStyle={{ background: 'var(--grey)', color: 'var(--white)' }}
                                     date={exp.date}
                                     iconStyle={{
-                                        background: (exp.class === 'education' ? 'var(--cream)' : exp.class === 'work' ? 'var(--grey)' : 'var(--orange)'),
-                                        color: (exp.class === 'education' ? 'var(--black)' : exp.class === 'work' ? 'var(--white)' : 'var(--grey)'),
+                                        background: (exp.expType === 'education' ? 'var(--cream)' : exp.expType === 'work' ? 'var(--grey)' : 'var(--orange)'),
+                                        color: (exp.expType === 'education' ? 'var(--black)' : exp.expType === 'work' ? 'var(--white)' : 'var(--grey)'),
                                     }}
-                                    icon={<FontAwesomeIcon style={{ width: '23px' }} icon={(exp.class === 'education' ? faGraduationCap : exp.class === 'work' ? faLaptop : faHandsHelping)} />}
+                                    icon={<FontAwesomeIcon style={{ width: '23px' }} icon={(exp.expType === 'education' ? faGraduationCap : exp.expType === 'work' ? faLaptop : faHandsHelping)} />}
                                 >
-                                    <h4>180DC UGM, IT Staff of Hackbiz</h4>
-                                    {exp.desc}
-                                </VerticalTimelineElement>
-                            )
-                        })}
-                        <VerticalTimelineElement
-                            iconOnClick={((isAllShown !== true) ? loadMore : resetLoad)}
-                            iconStyle={{
-                                background: (isAllShown !== true ? 'var(--orange)' : 'var(--red)'),
-                                color: 'var(--white)',
-                                cursor: 'pointer',
-                            }}
-                            icon={<FontAwesomeIcon style={{ width: '23px' }} icon={(isAllShown !== true ? faArrowDown : faTimes)} />}
-                        />
+                                    <h4>{exp.title}</h4>
+                                    <BlockContent
+                                        blocks={exp.subtitle}
+                                        projectId="cm6wihym"
+                                        dataset="production"
+                                    />
+                                </VerticalTimelineElement>   
+                        ))}
+                        <Link to="/myexperiences">
+                            <VerticalTimelineElement
+                                iconStyle={{
+                                    background: 'var(--orange)',
+                                    color: 'var(--white)',
+                                    cursor: 'pointer',
+                                }}
+                                icon={<FontAwesomeIcon style={{ width: '23px' }} icon={faEllipsisH} />}
+
+                            // icon={<FontAwesomeIcon style={{ width: '23px' }} icon={(isAllShown !== true ? faArrowDown : faTimes)} />}
+                            />
+                        </Link>
                     </VerticalTimeline>
+
                 </div>
                 <div className='call-to-action'>
-                    <h4>Get my one page resume below</h4>
                     <a href='' download><div className='button'>
                         <h4>Download Resume</h4>
                     </div></a>
@@ -166,6 +217,22 @@ const Container = styled.div`
     margin: 0;
     display: flex;
     flex-direction: column;
+
+    .call-to-action{
+            margin-top: 5vmin;
+            a{
+                text-decoration: none;
+            }
+            .button{
+                color: var(--white);
+                h4{
+                    margin: 0;
+                }
+                padding: 2vmin;
+                background-color: var(--red);
+                border-radius: 10px;
+            }
+        }
 
 
     .hero{
@@ -254,23 +321,5 @@ const Container = styled.div`
         }
 
 
-        .call-to-action{
-            margin-top: 5vmin;
-
-            a{
-                text-decoration: none;
-            }
-
-            .button{
-                color: var(--white);
-                h4{
-                    margin: 0;
-                }
-                padding: 2vmin;
-                background-color: var(--red);
-                border-radius: 10px;
-            }
-                
-        }
     }
 `

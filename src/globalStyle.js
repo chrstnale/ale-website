@@ -28,9 +28,6 @@ const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
-    img{
-        user-drag: none;
-    }
     
     html{
         scroll-behavior: smooth;
@@ -60,6 +57,7 @@ const GlobalStyle = createGlobalStyle`
 
         h1,h2 {
             font-family: "Oswald";
+            margin: 0.2rem;
         }
 
         h1{

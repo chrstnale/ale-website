@@ -1,20 +1,14 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components"
+import React from "react";
+import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleRight } from "@fortawesome/free-solid-svg-icons";
 import AOS from "aos";
 import { useEffect } from "react/cjs/react.development";
+import { Link } from "react-router-dom";
 
 export default function Card(props) {
-    const {
-        background,
-        headerColor,
-        textColor,
-        title,
-        subTitle,
-    } = props;
 
-    useEffect(()=>{
+    useEffect(() => {
         AOS.init({
             duration: 1000
         });
@@ -24,30 +18,29 @@ export default function Card(props) {
 
     return (
         <div
-            
             style={{
                 padding: "0 2px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-            }}>      
-        <CardStyled
-                data-aos= 'flip-up'
-
-            background={props.background}
-            headerColor={props.headerColor}
-            textColor={props.textColor}
-            title={props.textColor}
-            subTitle={props.subTitle}
-        >
+            }}>
+            <CardStyled
+                data-aos='flip-up'
+                imageSrc={props.imageSrc}
+                imageAlt={props.imageAlt}
+                blockColor={props.blockColor}
+                textColor={props.textColor}
+                title={props.textColor}
+                subtitle={props.subtitle}
+            >
                 <div className='card-img'>
-                    <img src={props.background}></img>
+                    <img src={props.imageSrc} alt={props.imageAlt}></img>
                 </div>
                 <div className='card-desc'>
-                    <h4>{props.title}<br /><span>{props.subTitle}</span></h4>
-                    <div className='icon'>
-                        <FontAwesomeIcon icon={faArrowCircleRight} style={{fontSize: 'calc(0.5rem + 3vmin)'}}/>
-                    </div>
+                    <h5>{props.title}<br /><span>{props.subtitle}</span></h5>
+                    <Link to={props.slug} key={props.keys} className='icon'>
+                        <FontAwesomeIcon icon={faArrowCircleRight}/>
+                    </Link>
                 </div>
             </CardStyled>
         </div>
@@ -56,17 +49,25 @@ export default function Card(props) {
 
 const CardStyled = styled.div`
     width: fit-content;
-    border-radius: 20px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    background-color: ${props => props.headerColor};
+    background-color: ${props => props.blockColor};
+    width: 40vmin;
+    height: 60vmin;
+    position: relative;
+
 
     .card-img{
-        background: ${props => props.background};
+        background: ${props => props.mainImage};
         flex-grow: 14;
-        width: 35vmin;
+        overflow: hidden;    
+        border-radius: 15px 15px 0 0;
         img{
+            border-radius: 15px 15px 0 0;
+            height: 100%;
             width: 100%;
+            object-fit: cover;
         }
     }
 
@@ -79,8 +80,21 @@ const CardStyled = styled.div`
         justify-content: space-between;
         align-items: center;
 
+        h5{
+            flex-wrap: wrap;
+            width: 80%;
+            font-size: calc(0.5rem+2vmin);
+            span{
+                font-size: calc(0.5rem+0.5vmin);
+                font-weight: normal;
+            }
+        }
+
         .icon{
+            font-size: calc(0.5rem + 3vmin);
             cursor: pointer;
+            width: 20%;
+            color: ${props => props.textColor};
         }
     }
 `

@@ -1,7 +1,8 @@
 export const ExpItems = [
     {
-        class: 'work',
-        size: 'big',
+        title: 'Ada',
+        expType: 'work',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -10,8 +11,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'volunteer',
-        size: 'big',
+        title: 'Ada',
+        expType: 'volunteer',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -20,8 +22,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'volunteer',
-        size: 'big',
+        title: 'Ada',
+        expType: 'volunteer',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -30,8 +33,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'volunteer',
-        size: 'big',
+        title: 'Ada',
+        expType: 'volunteer',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -40,8 +44,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'work',
-        size: 'big',
+        title: 'Ada',
+        expType: 'work',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -50,8 +55,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'education',
-        size: 'big',
+        title: 'Ada',
+        expType: 'education',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -60,8 +66,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'work',
-        size: 'big',
+        title: 'Ada',
+        expType: 'work',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -70,8 +77,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'education',
-        size: 'big',
+        title: 'Ada',
+        expType: 'education',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -80,8 +88,8 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'education',
-        size: 'big',
+        expType: 'education',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>
@@ -90,8 +98,9 @@ export const ExpItems = [
         </div>,
     },
     {
-        class: 'education',
-        size: 'big',
+        title: 'Ada',
+        expType: 'education',
+        expSize: 'big',
         date: '2021',
         desc:
         <div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {MenuItems} from "./MenuItems"
 
 export default class Navbar extends Component {
@@ -18,13 +18,14 @@ export default class Navbar extends Component {
     return (
       <Header id="nav">
         <nav className="navbar">
-          <Link
+          <NavLink
             to="/"
             className="logo"
             onClick={this.state.clicked ? this.handleClick : this.nothing()}
+            exact
           >
             <p>Christian Ale</p>
-          </Link>
+          </NavLink>
 
           {/* Right-corner desktop & dropdown menu mobile: Menu Navigasi  */}
           <NavItemsStyled
@@ -34,13 +35,12 @@ export default class Navbar extends Component {
             {MenuItems.map((item, index) => {
               return (
                 <li key={index}>
-                  <Link
+                  <NavLink
                     className={item.block ? "nav-links block" : "nav-links"}
                     to={item.url}
-                    relative
                   >
                     {item.title}
-                  </Link>
+                  </NavLink>
                 </li>
               );
             })}

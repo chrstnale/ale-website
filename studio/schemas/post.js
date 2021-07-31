@@ -18,10 +18,9 @@ export default {
       },
     },
     {
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: {type: 'author'},
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
     },
     {
       name: 'mainImage',
@@ -32,10 +31,26 @@ export default {
       },
     },
     {
+      name: 'blockColor',
+      title: 'Block Color',
+      type: 'colorPicker',
+    },
+    {
+      name: 'textColor',
+      title: 'Text Color',
+      type: 'colorPicker',
+    },
+    {
       name: 'categories',
       title: 'Categories',
       type: 'array',
       of: [{type: 'reference', to: {type: 'category'}}],
+    },
+    {
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{type: 'author'}]
     },
     {
       name: 'publishedAt',
@@ -52,14 +67,14 @@ export default {
   preview: {
     select: {
       title: 'title',
-      author: 'author.name',
+      // author: 'author.name',
       media: 'mainImage',
     },
-    prepare(selection) {
-      const {author} = selection
-      return Object.assign({}, selection, {
-        subtitle: author && `by ${author}`,
-      })
-    },
+    // prepare(selection) {
+    //   const {author} = selection
+    //   return Object.assign({}, selection, {
+    //     subtitle: author && `by ${author}`,
+    //   })
+    // },
   },
 }

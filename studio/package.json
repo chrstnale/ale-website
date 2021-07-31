@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "@sanity/base": "^2.13.1",
+    "@sanity/color-input": "^2.13.0",
     "@sanity/components": "^2.13.0",
     "@sanity/core": "^2.13.1",
     "@sanity/default-layout": "^2.13.1",
@@ -23,7 +24,8 @@
     "@sanity/vision": "^2.13.1",
     "prop-types": "^15.7",
     "react": "^17.0",
-    "react-dom": "^17.0"
+    "react-dom": "^17.0",
+    "sanity-plugin-color-picker": "^1.0.3"
   },
   "devDependencies": {}
 }

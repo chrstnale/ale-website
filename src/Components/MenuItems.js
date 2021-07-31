@@ -1,6 +1,14 @@
 export const MenuItems = [
     {
         title: 'Home',
-        url: '/'
+        url: '/' ,
+    },
+    {
+        title: 'My Experiences',
+        url: '/myexperiences',
+    },
+    {
+        title: 'My Works',
+        url: '/myworks',
     },
 ]

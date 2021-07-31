@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import styled from 'styled-components';
@@ -11,19 +11,19 @@ export default function Footer() {
             <div className='socmeds'>
 
                 <div>
-                    <a href='https://linkedin.com/in/christianale' target='_blank' >
+                    <a href='https://linkedin.com/in/christianale' target='_blank' rel="noreferrer">
                         <FontAwesomeIcon icon={faLinkedin} className='icon' />
                         <h4>christianale</h4>
                     </a>
                 </div>
                 <div>
-                    <a href='https://github.com/chrstnale/' target='_blank' >
+                    <a href='https://github.com/chrstnale/' target='_blank' rel="noreferrer">
                         <FontAwesomeIcon icon={faGithub} className='icon' />
                         <h4>chrstnale</h4>
                     </a>
                 </div>
                 <div>
-                    <a href='https://www.instagram.com/chrstn_ale/' target='_blank' >
+                    <a href='https://www.instagram.com/chrstn_ale/' target='_blank' rel="noreferrer">
                         <FontAwesomeIcon icon={faInstagram} className='icon' />
                         <h4>chrstn_ale</h4>
                     </a>
